@@ -1,10 +1,10 @@
-package com.king_grey.movie_app.screens.discover.domain.model.movie
+package com.king_grey.movie_app.screens.discover.domain.model.tvshow
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.king_grey.movie_app.core.util.constants.Constants
 
-@Entity(tableName = Constants.MOVIE_REMOTE_KEY_DATABASE_TABLE)
-data class MovieRemoteKey(
+@Entity(tableName = Constants.TV_SHOW_REMOTE_KEYS_DATABASE_TABLE)
+data class TvShowRemoteKeys(
     @PrimaryKey(autoGenerate = false) val id: Int, val prevPage: Int?, val nextPage: Int?
 )

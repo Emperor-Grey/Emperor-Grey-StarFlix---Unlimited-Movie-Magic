@@ -5,17 +5,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.king_grey.movie_app.core.util.constants.Constants
-import com.king_grey.movie_app.screens.discover.domain.model.movie.MovieRemoteKey
+import com.king_grey.movie_app.screens.discover.domain.model.movie.MovieRemoteKeys
 
 @Dao
 interface MovieRemoteKeyDao {
 
-    @Query("SELECT * FROM ${Constants.MOVIE_REMOTE_KEY_DATABASE_TABLE} WHERE id = :movieId")
-    suspend fun getRemoteKey(movieId: Int): MovieRemoteKey?
+    @Query("SELECT * FROM ${Constants.MOVIE_REMOTE_KEYS_DATABASE_TABLE} WHERE id = :movieId")
+    suspend fun getRemoteKeys(movieId: Int): MovieRemoteKeys?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAllRemoteKeys(movieRemoteKeys: List<MovieRemoteKey>)
+    suspend fun addAllRemoteKeys(movieRemoteKeys: List<MovieRemoteKeys>)
 
-    @Query("DELETE FROM ${Constants.MOVIE_REMOTE_KEY_DATABASE_TABLE}")
+    @Query("DELETE FROM ${Constants.MOVIE_REMOTE_KEYS_DATABASE_TABLE}")
     suspend fun deleteAllRemoteKeys()
 }

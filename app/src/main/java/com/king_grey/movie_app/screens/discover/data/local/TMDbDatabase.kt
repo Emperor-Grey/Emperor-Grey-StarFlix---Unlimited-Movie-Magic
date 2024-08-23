@@ -9,11 +9,11 @@ import com.king_grey.movie_app.screens.discover.data.local.dao.mediator.MovieRem
 import com.king_grey.movie_app.screens.discover.data.local.dao.mediator.TvShowRemoteKeyDao
 import com.king_grey.movie_app.screens.discover.domain.model.entities.MovieEntity
 import com.king_grey.movie_app.screens.discover.domain.model.entities.TvShowEntity
-import com.king_grey.movie_app.screens.discover.domain.model.movie.MovieRemoteKey
-import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShowRemoteKey
+import com.king_grey.movie_app.screens.discover.domain.model.movie.MovieRemoteKeys
+import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShowRemoteKeys
 
 @Database(
-    entities = [MovieEntity::class, TvShowEntity::class, MovieRemoteKey::class, TvShowRemoteKey::class],
+    entities = [MovieEntity::class, TvShowEntity::class, MovieRemoteKeys::class, TvShowRemoteKeys::class],
     version = 1
 )
 @TypeConverters(DatabaseConverter::class)
@@ -24,5 +24,4 @@ abstract class TMDbDatabase : RoomDatabase() {
 
     abstract fun movieRemoteKeyDao(): MovieRemoteKeyDao
     abstract fun tvShowRemoteKeyDao(): TvShowRemoteKeyDao
-
 }
