@@ -1,11 +1,11 @@
 package com.king_grey.movie_app.screens.discover.data.di
 
+import com.google.gson.GsonBuilder
 import com.king_grey.movie_app.screens.discover.data.remote.api.TMDbService
 import com.king_grey.movie_app.screens.discover.data.repository.MovieRepositoryImpl
 import com.king_grey.movie_app.screens.discover.data.repository.TvShowRepositoryImpl
 import com.king_grey.movie_app.screens.discover.domain.repository.MovieRepository
 import com.king_grey.movie_app.screens.discover.domain.repository.TvShowRepository
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DiscoverModule {
+object NetworkModule {
     @Provides
     @Singleton
     fun providesOkHttpClient(): OkHttpClient {

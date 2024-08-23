@@ -7,7 +7,7 @@ import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
 class MoviesPagingSource : PagingSource<Int, Movie>() {
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-        TODO("Not yet implemented")
+        return state.anchorPosition
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
