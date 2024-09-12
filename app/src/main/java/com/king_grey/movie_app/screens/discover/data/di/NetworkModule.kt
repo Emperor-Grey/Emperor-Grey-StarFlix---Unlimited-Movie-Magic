@@ -1,6 +1,7 @@
 package com.king_grey.movie_app.screens.discover.data.di
 
 import com.google.gson.GsonBuilder
+import com.king_grey.movie_app.BuildConfig
 import com.king_grey.movie_app.screens.discover.data.remote.api.TMDbService
 import com.king_grey.movie_app.screens.discover.data.repository.MovieRepositoryImpl
 import com.king_grey.movie_app.screens.discover.data.repository.TvShowRepositoryImpl
@@ -44,7 +45,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesMovieRepository(apiService: TMDbService): MovieRepository {
-        return MovieRepositoryImpl(apiService)
+        return MovieRepositoryImpl(apiService, BuildConfig.API_KEY)
     }
 
     @Provides

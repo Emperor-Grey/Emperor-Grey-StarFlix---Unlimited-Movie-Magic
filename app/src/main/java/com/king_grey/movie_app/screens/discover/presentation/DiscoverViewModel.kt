@@ -2,6 +2,7 @@ package com.king_grey.movie_app.screens.discover.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.king_grey.movie_app.core.util.Resource
 import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
 import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShow
@@ -18,6 +19,8 @@ class DiscoverViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
     private val tvShowRepository: TvShowRepository,
 ) : ViewModel() {
+
+    val pagedMovies = movieRepository.fetchPopularMovies().flow.cachedIn(viewModelScope)
 
     // Movies State
     private val _movies = MutableStateFlow<List<Movie>>(emptyList())

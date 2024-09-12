@@ -85,6 +85,10 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.paging)
 
+    // Paging
+    implementation(libs.androidx.paging.runtime)
+    implementation("androidx.paging:paging-compose:3.3.2")
+
     // Google Font's
     implementation(libs.androidx.ui.text.google.fonts)
 

@@ -16,7 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.king_grey.movie_app.screens.discover.presentation.components.DiscoverTabItems
 import com.king_grey.movie_app.screens.discover.presentation.components.DiscoverTabs
 import com.king_grey.movie_app.screens.discover.presentation.components.DiscoverTopBar
@@ -24,6 +26,8 @@ import com.king_grey.movie_app.screens.discover.presentation.components.Discover
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DiscoverScreen(navController: NavHostController) {
+    val discoverViewModel: DiscoverViewModel = hiltViewModel()
+    val pagedMovies = discoverViewModel.pagedMovies.collectAsLazyPagingItems()
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = { DiscoverTabItems.size })
@@ -53,6 +57,7 @@ fun DiscoverScreen(navController: NavHostController) {
 
             DiscoverTabs(
                 selectedTabIndex = selectedTabIndex,
+                movies = pagedMovies,
                 navController = navController,
                 pagerState = pagerState
             ) { index ->

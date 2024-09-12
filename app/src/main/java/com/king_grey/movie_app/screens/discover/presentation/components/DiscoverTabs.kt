@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.paging.compose.LazyPagingItems
 import com.king_grey.movie_app.core.ui.theme.AppTypography
+import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
 import com.king_grey.movie_app.screens.discover.presentation.tabs.MoviesTab
 import com.king_grey.movie_app.screens.discover.presentation.tabs.TvShowTab
 import com.king_grey.movie_app.screens.home.presentation.Tabs
@@ -21,6 +23,7 @@ import com.king_grey.movie_app.screens.home.presentation.Tabs
 @Composable
 fun ColumnScope.DiscoverTabs(
     selectedTabIndex: Int,
+    movies: LazyPagingItems<Movie>,
     navController: NavHostController,
     pagerState: PagerState,
     onTabSelected: (Int) -> Unit,
@@ -44,10 +47,10 @@ fun ColumnScope.DiscoverTabs(
         val tab = DiscoverTabItems[index]
 
         when (tab.title) {
-            "Movies" -> MoviesTab(navController)
+            "Movies" -> MoviesTab(movies, navController)
             "TV Shows" -> TvShowTab(navController)
 
-            else -> MoviesTab(navController)
+            else -> MoviesTab(movies, navController)
         }
     }
 }
