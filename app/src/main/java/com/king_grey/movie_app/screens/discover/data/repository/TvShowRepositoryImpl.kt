@@ -1,8 +1,11 @@
 package com.king_grey.movie_app.screens.discover.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.king_grey.movie_app.BuildConfig
 import com.king_grey.movie_app.core.util.Resource
 import com.king_grey.movie_app.screens.discover.data.remote.api.TMDbService
+import com.king_grey.movie_app.screens.discover.data.remote.paging.TvShowPagingSource
 import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShow
 import com.king_grey.movie_app.screens.discover.domain.repository.TvShowRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,8 +14,16 @@ import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class TvShowRepositoryImpl @Inject constructor(private val apiService: TMDbService) :
-    TvShowRepository {
+class TvShowRepositoryImpl @Inject constructor(
+    private val apiService: TMDbService, private val apiKey: String
+) : TvShowRepository {
+
+    override fun fetchPopularTvShows(): Pager<Int, TvShow> {
+        return Pager(config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = { TvShowPagingSource(apiService, apiKey) })
+    }
+
+
     override suspend fun getPopularTvShows(page: Int): Flow<Resource<List<TvShow>>> {
         return flow {
             emit(Resource.Loading())

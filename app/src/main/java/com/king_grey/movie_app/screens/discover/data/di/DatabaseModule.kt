@@ -17,7 +17,9 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providesDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
-        context, TMDbDatabase::class.java, Constants.TMDB_DATABASE
-    ).build()
+    fun providesDatabase(@ApplicationContext context: Context): TMDbDatabase {
+        return Room.databaseBuilder(
+            context, TMDbDatabase::class.java, Constants.TMDB_DATABASE
+        ).build()
+    }
 }

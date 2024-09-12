@@ -6,47 +6,76 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.king_grey.movie_app.screens.discover.presentation.DiscoverViewModel
-import com.king_grey.movie_app.screens.discover.presentation.TvShowType
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShow
 import com.king_grey.movie_app.screens.discover.presentation.components.TvShowCard
 
 @Composable
-fun TvShowTab(navController: NavHostController) {
-
-    val discoverViewModel: DiscoverViewModel = hiltViewModel()
-
-    val tvShows by discoverViewModel.tvShows.collectAsState()
-    val tvShowLoading by discoverViewModel.tvShowLoading.collectAsState()
-
-    LaunchedEffect(Unit) {
-        discoverViewModel.fetchTvShows(TvShowType.PopularTv)
-    }
-
-    if (!tvShowLoading) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            items(tvShows) { tvShow ->
-                TvShowCard(tvShow = tvShow, navController = navController)
+fun TvShowTab(tvShows: LazyPagingItems<TvShow>, navController: NavHostController) {
+    when {
+        tvShows.loadState.refresh is LoadState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
             }
         }
-    } else {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+
+        tvShows.loadState.refresh is LoadState.Error -> {
+            val error = (tvShows.loadState.refresh as LoadState.Error).error
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "Error: ${error.localizedMessage}", color = Color.Red)
+            }
+        }
+
+        tvShows.itemCount == 0 -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "No Movies Available")
+            }
+        }
+
+        else -> {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                contentPadding = PaddingValues(8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(tvShows.itemCount) { index ->
+                    tvShows[index]?.let { tvShow ->
+                        TvShowCard(tvShow = tvShow, navController = navController)
+                    }
+                }
+
+
+                if (tvShows.loadState.append is LoadState.Loading) {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+
+                if (tvShows.loadState.append is LoadState.Error) {
+                    val appendError = (tvShows.loadState.append as LoadState.Error).error
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "Error loading more movies: ${appendError.localizedMessage}")
+                        }
+                    }
+                }
+            }
         }
     }
 }

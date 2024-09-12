@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import com.king_grey.movie_app.core.ui.theme.AppTypography
 import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
+import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShow
 import com.king_grey.movie_app.screens.discover.presentation.tabs.MoviesTab
 import com.king_grey.movie_app.screens.discover.presentation.tabs.TvShowTab
 import com.king_grey.movie_app.screens.home.presentation.Tabs
@@ -24,6 +25,7 @@ import com.king_grey.movie_app.screens.home.presentation.Tabs
 fun ColumnScope.DiscoverTabs(
     selectedTabIndex: Int,
     movies: LazyPagingItems<Movie>,
+    tvShows: LazyPagingItems<TvShow>,
     navController: NavHostController,
     pagerState: PagerState,
     onTabSelected: (Int) -> Unit,
@@ -48,7 +50,7 @@ fun ColumnScope.DiscoverTabs(
 
         when (tab.title) {
             "Movies" -> MoviesTab(movies, navController)
-            "TV Shows" -> TvShowTab(navController)
+            "TV Shows" -> TvShowTab(tvShows, navController)
 
             else -> MoviesTab(movies, navController)
         }

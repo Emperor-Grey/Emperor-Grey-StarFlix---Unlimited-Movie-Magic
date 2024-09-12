@@ -21,6 +21,7 @@ class DiscoverViewModel @Inject constructor(
 ) : ViewModel() {
 
     val pagedMovies = movieRepository.fetchPopularMovies().flow.cachedIn(viewModelScope)
+    val pagedTvShows = tvShowRepository.fetchPopularTvShows().flow.cachedIn(viewModelScope)
 
     // Movies State
     private val _movies = MutableStateFlow<List<Movie>>(emptyList())

@@ -28,6 +28,7 @@ import com.king_grey.movie_app.screens.discover.presentation.components.Discover
 fun DiscoverScreen(navController: NavHostController) {
     val discoverViewModel: DiscoverViewModel = hiltViewModel()
     val pagedMovies = discoverViewModel.pagedMovies.collectAsLazyPagingItems()
+    val pagedTvShow = discoverViewModel.pagedTvShows.collectAsLazyPagingItems()
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = { DiscoverTabItems.size })
@@ -58,6 +59,7 @@ fun DiscoverScreen(navController: NavHostController) {
             DiscoverTabs(
                 selectedTabIndex = selectedTabIndex,
                 movies = pagedMovies,
+                tvShows = pagedTvShow,
                 navController = navController,
                 pagerState = pagerState
             ) { index ->

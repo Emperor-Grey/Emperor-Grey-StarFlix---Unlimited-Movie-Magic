@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
     suspend fun getPopularMovies(page: Int): Flow<Resource<List<Movie>>>
-    fun fetchPopularMovies(): Pager<Int, Movie>
     suspend fun getTopRatedMovies(page: Int): Flow<Resource<List<Movie>>>
     suspend fun getUpcomingMovies(page: Int): Flow<Resource<List<Movie>>>
     suspend fun getNowPlayingMovies(page: Int): Flow<Resource<List<Movie>>>
+
+    fun fetchPopularMovies(): Pager<Int, Movie>
 }
