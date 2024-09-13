@@ -22,12 +22,14 @@ import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.king_grey.movie_app.screens.discover.data.remote.api.TMDbService
-import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
+import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShow
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.MovieDetailsScreen(
-    navController: NavHostController, movie: Movie, animatedVisibilityScope: AnimatedVisibilityScope
+fun SharedTransitionScope.TvShowDetailsScreen(
+    navController: NavHostController,
+    tvShow: TvShow,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         val screenHeight = LocalConfiguration.current.screenHeightDp.dp
@@ -38,14 +40,14 @@ fun SharedTransitionScope.MovieDetailsScreen(
                 .fillMaxWidth()
                 .height(imageHeight)
                 .sharedElement(
-                    rememberSharedContentState(key = movie.id),
+                    rememberSharedContentState(key = tvShow.id),
                     animatedVisibilityScope = animatedVisibilityScope
                 ),
                 contentScale = ContentScale.FillBounds,
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("${TMDbService.IMAGE_BASE_URL}${movie.poster_path}")
+                    .data("${TMDbService.IMAGE_BASE_URL}${tvShow.poster_path}")
                     .crossfade(enable = true).build(),
-                contentDescription = movie.title,
+                contentDescription = tvShow.name,
                 loading = {
                     Box(contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(

@@ -1,5 +1,8 @@
 package com.king_grey.movie_app.screens.discover.presentation.tabs
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,8 +22,13 @@ import androidx.paging.compose.LazyPagingItems
 import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
 import com.king_grey.movie_app.screens.discover.presentation.components.MovieCard
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun MoviesTab(movies: LazyPagingItems<Movie>, navController: NavHostController) {
+fun SharedTransitionScope.MoviesTab(
+    movies: LazyPagingItems<Movie>,
+    navController: NavHostController,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
     when {
         movies.loadState.refresh is LoadState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -50,7 +58,11 @@ fun MoviesTab(movies: LazyPagingItems<Movie>, navController: NavHostController) 
             ) {
                 items(movies.itemCount) { index ->
                     movies[index]?.let { movie ->
-                        MovieCard(movie = movie, navController = navController)
+                        MovieCard(
+                            movie = movie,
+                            navController = navController,
+                            animatedVisibilityScope
+                        )
                     }
                 }
 

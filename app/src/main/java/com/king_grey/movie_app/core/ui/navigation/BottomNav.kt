@@ -1,4 +1,4 @@
-package com.king_grey.movie_app.core.util.navigation
+package com.king_grey.movie_app.core.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.LibraryBooks

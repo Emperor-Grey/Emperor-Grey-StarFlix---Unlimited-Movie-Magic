@@ -2,7 +2,7 @@ package com.king_grey.movie_app.main.presentation.screens.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.king_grey.movie_app.core.util.navigation.Screen
+import com.king_grey.movie_app.core.ui.navigation.Screen
 import com.king_grey.movie_app.core.util.preferences.DataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

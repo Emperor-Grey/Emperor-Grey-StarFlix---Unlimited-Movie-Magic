@@ -69,13 +69,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Predictive Backs and etc
+    implementation(libs.androidx.navigation.compose)
+
+    //Shared Element Trans
+    implementation(libs.ui)
+    implementation(libs.androidx.animation)
 
     // Extended Icons
     implementation(libs.androidx.material.icons.extended)
@@ -87,7 +87,7 @@ dependencies {
 
     // Paging
     implementation(libs.androidx.paging.runtime)
-    implementation("androidx.paging:paging-compose:3.3.2")
+    implementation(libs.androidx.paging.compose)
 
     // Google Font's
     implementation(libs.androidx.ui.text.google.fonts)
@@ -127,4 +127,14 @@ dependencies {
 
 //    // Encrypted Shared Preference
 //    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // Testing (I think so)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
 }

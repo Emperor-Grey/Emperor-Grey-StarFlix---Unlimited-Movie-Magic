@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.king_grey.movie_app.R
 import com.king_grey.movie_app.core.ui.theme.AppTypography
-import com.king_grey.movie_app.core.util.navigation.Screen
+import com.king_grey.movie_app.core.ui.navigation.Screen
 
 @Composable
 fun SplashScreen(

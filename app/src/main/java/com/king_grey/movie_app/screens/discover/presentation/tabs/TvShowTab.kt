@@ -1,5 +1,8 @@
 package com.king_grey.movie_app.screens.discover.presentation.tabs
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,8 +22,13 @@ import androidx.paging.compose.LazyPagingItems
 import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShow
 import com.king_grey.movie_app.screens.discover.presentation.components.TvShowCard
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun TvShowTab(tvShows: LazyPagingItems<TvShow>, navController: NavHostController) {
+fun SharedTransitionScope.TvShowTab(
+    tvShows: LazyPagingItems<TvShow>,
+    navController: NavHostController,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
     when {
         tvShows.loadState.refresh is LoadState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -50,10 +58,13 @@ fun TvShowTab(tvShows: LazyPagingItems<TvShow>, navController: NavHostController
             ) {
                 items(tvShows.itemCount) { index ->
                     tvShows[index]?.let { tvShow ->
-                        TvShowCard(tvShow = tvShow, navController = navController)
+                        TvShowCard(
+                            tvShow = tvShow,
+                            navController = navController,
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
                     }
                 }
-
 
                 if (tvShows.loadState.append is LoadState.Loading) {
                     item {

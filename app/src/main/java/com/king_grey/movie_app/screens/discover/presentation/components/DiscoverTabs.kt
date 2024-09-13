@@ -1,8 +1,9 @@
 package com.king_grey.movie_app.screens.discover.presentation.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,13 +21,16 @@ import com.king_grey.movie_app.screens.discover.presentation.tabs.MoviesTab
 import com.king_grey.movie_app.screens.discover.presentation.tabs.TvShowTab
 import com.king_grey.movie_app.screens.home.presentation.Tabs
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class
+)
 @Composable
-fun ColumnScope.DiscoverTabs(
+fun SharedTransitionScope.DiscoverTabs(
     selectedTabIndex: Int,
     movies: LazyPagingItems<Movie>,
     tvShows: LazyPagingItems<TvShow>,
     navController: NavHostController,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     pagerState: PagerState,
     onTabSelected: (Int) -> Unit,
 ) {
@@ -42,17 +46,15 @@ fun ColumnScope.DiscoverTabs(
 
     HorizontalPager(
         state = pagerState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f),
+        modifier = Modifier.fillMaxSize(),
     ) { index ->
         val tab = DiscoverTabItems[index]
 
         when (tab.title) {
-            "Movies" -> MoviesTab(movies, navController)
-            "TV Shows" -> TvShowTab(tvShows, navController)
+            "Movies" -> MoviesTab(movies, navController, animatedVisibilityScope)
+            "TV Shows" -> TvShowTab(tvShows, navController, animatedVisibilityScope)
 
-            else -> MoviesTab(movies, navController)
+            else -> MoviesTab(movies, navController, animatedVisibilityScope)
         }
     }
 }

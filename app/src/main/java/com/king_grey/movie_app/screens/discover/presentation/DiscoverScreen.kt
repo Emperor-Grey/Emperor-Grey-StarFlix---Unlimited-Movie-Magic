@@ -1,6 +1,8 @@
 package com.king_grey.movie_app.screens.discover.presentation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,9 +34,13 @@ import com.king_grey.movie_app.screens.discover.presentation.components.FilterBo
 import com.king_grey.movie_app.screens.discover.presentation.components.TvShowFilterBottomSheetContent
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun DiscoverScreen(navController: NavHostController, padding: PaddingValues) {
+fun SharedTransitionScope.DiscoverScreen(
+    navController: NavHostController,
+    padding: PaddingValues,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
     val discoverViewModel: DiscoverViewModel = hiltViewModel()
     val scope = rememberCoroutineScope()
 
@@ -111,6 +117,7 @@ fun DiscoverScreen(navController: NavHostController, padding: PaddingValues) {
                     selectedTabIndex = selectedTabIndex,
                     movies = pagedMovies,
                     tvShows = pagedTvShow,
+                    animatedVisibilityScope = animatedVisibilityScope,
                     navController = navController,
                     pagerState = pagerState
                 ) { index ->
