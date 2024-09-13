@@ -34,8 +34,7 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge(
             navigationBarStyle = SystemBarStyle.auto(
-                android.graphics.Color.TRANSPARENT,
-                android.graphics.Color.TRANSPARENT,
+                android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT
             ), statusBarStyle = SystemBarStyle.auto(
                 android.graphics.Color.TRANSPARENT,
                 android.graphics.Color.TRANSPARENT,
@@ -43,7 +42,6 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             MovieAppTheme {
-
                 navController = rememberNavController()
                 splashViewModel = hiltViewModel()
 
@@ -55,6 +53,7 @@ class MainActivity : ComponentActivity() {
                         Screen.Home.route, Screen.Discover.route,
                         Screen.MyList.route, Screen.Settings.route,
                     )
+
                     if (showBottomBar) {
                         BottomNav(navController = navController)
                     }
@@ -62,7 +61,6 @@ class MainActivity : ComponentActivity() {
                     if (isLoading.value) {
                         CircularProgressIndicator()
                     } else {
-
                         SetUpNavigation(
                             navController = navController,
                             startDestination = startDestination.value,

@@ -2,107 +2,85 @@ package com.king_grey.movie_app.screens.discover.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.king_grey.movie_app.core.util.Resource
+import com.king_grey.movie_app.core.util.preferences.DataStore
 import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
-import com.king_grey.movie_app.screens.discover.domain.model.tvshow.TvShow
 import com.king_grey.movie_app.screens.discover.domain.repository.MovieRepository
 import com.king_grey.movie_app.screens.discover.domain.repository.TvShowRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class DiscoverViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
     private val tvShowRepository: TvShowRepository,
+    private val dataStore: DataStore
 ) : ViewModel() {
 
-    val pagedMovies = movieRepository.fetchPopularMovies().flow.cachedIn(viewModelScope)
-    val pagedTvShows = tvShowRepository.fetchPopularTvShows().flow.cachedIn(viewModelScope)
+    private val _selectedTabIndex = MutableStateFlow(0)
+    val selectedTabIndex: StateFlow<Int> = _selectedTabIndex
 
-    // Movies State
-    private val _movies = MutableStateFlow<List<Movie>>(emptyList())
-    val movies = _movies.asStateFlow()
+    private val _movieType = MutableStateFlow(MovieType.Popular)
+    val movieType = _movieType.asStateFlow()
 
-    private val _movieLoading = MutableStateFlow(false)
-    val movieLoading = _movieLoading.asStateFlow()
+    private val _tvShowType = MutableStateFlow(TvShowType.PopularTv)
+    val tvShowType = _tvShowType.asStateFlow()
 
-    // TV Shows State
-    private val _tvShows = MutableStateFlow<List<TvShow>>(emptyList())
-    val tvShows = _tvShows.asStateFlow()
-
-    private val _tvShowLoading = MutableStateFlow(false)
-    val tvShowLoading = _tvShowLoading.asStateFlow()
-
-    private var currentPage: Int = 1
-
-    fun fetchMovies(movieType: MovieType) {
+    init {
         viewModelScope.launch {
-            val flow = when (movieType) {
-                MovieType.Popular -> movieRepository.getPopularMovies(currentPage)
-                MovieType.Upcoming -> movieRepository.getUpcomingMovies(currentPage)
-                MovieType.TopRated -> movieRepository.getTopRatedMovies(currentPage)
-                MovieType.NowPlaying -> movieRepository.getNowPlayingMovies(currentPage)
+            dataStore.readMovieType().collect { movieType ->
+                _movieType.value = movieType
             }
-
-            _movieLoading.value = true
-            flow.collect { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        _movies.value = resource.data ?: emptyList()
-                        _movieLoading.value = false
-                    }
-
-                    is Resource.Error -> {
-                        _movieLoading.value = false
-                    }
-
-                    is Resource.Loading -> {
-                        _movieLoading.value = true
-                    }
-                }
+            dataStore.readTvShowType().collect { tvShowType ->
+                _tvShowType.value = tvShowType
             }
         }
     }
 
-    fun fetchTvShows(tvShowType: TvShowType) {
+
+    val pagedMovies: Flow<PagingData<Movie>> = _movieType.flatMapLatest { type ->
+        movieRepository.fetchMovieByType(type).flow
+    }.cachedIn(viewModelScope)
+
+
+    val pagedTvShows = _tvShowType.flatMapLatest { type ->
+        tvShowRepository.fetchTvShowByType(type).flow
+    }.cachedIn(viewModelScope)
+
+
+    fun setSelectedTabIndex(index: Int) {
+        _selectedTabIndex.value = index
+    }
+
+    fun setMovieType(movieType: MovieType) {
+        _movieType.value = movieType
         viewModelScope.launch {
-            val flow = when (tvShowType) {
-                TvShowType.PopularTv -> tvShowRepository.getPopularTvShows(currentPage)
-                TvShowType.UpcomingTv -> tvShowRepository.getUpcomingTvShows(currentPage)
-                TvShowType.OnTheAirTv -> tvShowRepository.getOnTheAirTvShows(currentPage)
-                TvShowType.AiringTodayTv -> tvShowRepository.getAiringTodayTvShows(currentPage)
-            }
+            dataStore.saveMovieType(movieType)
+        }
+    }
 
-            _tvShowLoading.value = true
-            flow.collect { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        _tvShows.value = resource.data ?: emptyList()
-                        _tvShowLoading.value = false
-                    }
-
-                    is Resource.Error -> {
-                        _tvShowLoading.value = false
-                    }
-
-                    is Resource.Loading -> {
-                        _tvShowLoading.value = true
-                    }
-                }
-            }
+    fun setTvShowType(tvShowType: TvShowType) {
+        _tvShowType.value = tvShowType
+        viewModelScope.launch {
+            dataStore.saveTvShowType(tvShowType)
         }
     }
 }
 
 
 enum class MovieType {
-    TopRated, Popular, Upcoming, NowPlaying,
+    Popular, Upcoming, TopRated, NowPlaying,
 }
 
 enum class TvShowType {
-    PopularTv, OnTheAirTv, AiringTodayTv, UpcomingTv,
+    PopularTv, UpcomingTv, OnTheAirTv, AiringTodayTv,
 }

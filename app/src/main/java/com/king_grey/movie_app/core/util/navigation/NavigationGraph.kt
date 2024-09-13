@@ -17,7 +17,6 @@ import com.king_grey.movie_app.screens.settings.presentation.SettingsScreen
 fun SetUpNavigation(
     navController: NavHostController, startDestination: String, padding: PaddingValues
 ) {
-
     NavHost(navController = navController, startDestination) {
 
         composable(route = Screen.Splash.route) {
@@ -29,7 +28,7 @@ fun SetUpNavigation(
         }
 
         composable(route = Screen.Discover.route) {
-            DiscoverScreen(navController)
+            DiscoverScreen(navController, padding)
         }
 
         composable(route = Screen.MyList.route) {

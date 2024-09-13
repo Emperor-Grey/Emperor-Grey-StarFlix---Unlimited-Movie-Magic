@@ -24,7 +24,7 @@ fun MovieCard(movie: Movie, navController: NavHostController) {
         SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
             .data("${TMDbService.IMAGE_BASE_URL}${movie.poster_path}").crossfade(enable = true)
             .build(), contentDescription = movie.title, loading = {
-            Box(Modifier.size(125.dp, 170.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(125.dp, 185.dp), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )
