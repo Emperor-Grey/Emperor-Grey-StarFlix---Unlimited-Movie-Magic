@@ -59,9 +59,7 @@ fun SharedTransitionScope.MoviesTab(
                 items(movies.itemCount) { index ->
                     movies[index]?.let { movie ->
                         MovieCard(
-                            movie = movie,
-                            navController = navController,
-                            animatedVisibilityScope
+                            movie = movie, navController = navController, animatedVisibilityScope
                         )
                     }
                 }

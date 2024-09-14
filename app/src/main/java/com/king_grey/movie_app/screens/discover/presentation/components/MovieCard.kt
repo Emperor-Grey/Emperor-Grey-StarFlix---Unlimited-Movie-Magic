@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -25,9 +26,11 @@ import com.king_grey.movie_app.screens.discover.domain.model.movie.Movie
 fun SharedTransitionScope.MovieCard(
     movie: Movie, navController: NavHostController, animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-    Card(modifier = Modifier.clickable {
-        navController.navigate(Screen.MovieDetails.createRoute(movie))
-    }) {
+    Card(modifier = Modifier
+        .clipToBounds()
+        .clickable {
+            navController.navigate(Screen.MovieDetails.createRoute(movie))
+        }) {
         SubcomposeAsyncImage(modifier = Modifier.sharedElement(
             rememberSharedContentState(key = movie.id),
             animatedVisibilityScope = animatedVisibilityScope

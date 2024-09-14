@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -30,10 +31,12 @@ fun SharedTransitionScope.TvShowCard(
     Card(modifier = Modifier.clickable {
         navController.navigate(Screen.TvShowDetails.createRoute(tvShow))
     }) {
-        SubcomposeAsyncImage(modifier = Modifier.sharedElement(
-            rememberSharedContentState(key = tvShow.id),
-            animatedVisibilityScope = animatedVisibilityScope
-        ),
+        SubcomposeAsyncImage(modifier = Modifier
+            .clipToBounds()
+            .sharedElement(
+                rememberSharedContentState(key = tvShow.id),
+                animatedVisibilityScope = animatedVisibilityScope
+            ),
             model = ImageRequest.Builder(LocalContext.current)
                 .data("${TMDbService.IMAGE_BASE_URL}${tvShow.poster_path}").crossfade(enable = true)
                 .build(),
