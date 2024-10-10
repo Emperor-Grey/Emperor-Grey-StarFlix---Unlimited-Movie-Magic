@@ -23,9 +23,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//        buildConfigField(
-//            type = "String", name = "API_KEY", value = "d7c6aa191629170a8dfea80f78e1dcd6"
-//        )
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -40,8 +37,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -98,7 +95,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
-//    // Timber
+//    Timber
 //    implementation("com.jakewharton.timber:timber:5.0.1")
 
     // Coroutines
@@ -125,7 +122,7 @@ dependencies {
     // Datastore Preferences
     implementation(libs.androidx.datastore.preferences)
 
-//    // Encrypted Shared Preference
+//    Encrypted Shared Preference
 //    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // Testing (I think so)
@@ -136,5 +133,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 }
