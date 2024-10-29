@@ -18,5 +18,4 @@ interface TvShowRemoteKeyDao {
 
     @Query("DELETE FROM ${Constants.TV_SHOW_REMOTE_KEYS_DATABASE_TABLE}")
     suspend fun deleteAllRemoteKeys()
-
 }
