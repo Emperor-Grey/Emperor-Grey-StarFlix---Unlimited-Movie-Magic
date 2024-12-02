@@ -32,17 +32,17 @@ fun SharedTransitionScope.TvShowDetailsScreen(
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        val screenHeight = LocalConfiguration.current.screenHeightDp.dp 
+        val screenHeight = LocalConfiguration.current.screenHeightDp.dp
         val imageHeight = screenHeight * 0.63f
 
         Column(modifier = Modifier.fillMaxHeight()) {
             SubcomposeAsyncImage(modifier = Modifier
-                .fillMaxWidth()
-                .height(imageHeight)
                 .sharedElement(
                     rememberSharedContentState(key = tvShow.id),
                     animatedVisibilityScope = animatedVisibilityScope
-                ),
+                )
+                .fillMaxWidth()
+                .height(imageHeight),
                 contentScale = ContentScale.FillBounds,
                 model = ImageRequest.Builder(LocalContext.current)
                     .data("${TMDbService.IMAGE_BASE_URL}${tvShow.poster_path}")

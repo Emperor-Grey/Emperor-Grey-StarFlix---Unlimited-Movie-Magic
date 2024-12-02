@@ -41,7 +41,7 @@ fun SharedTransitionScope.MovieDetailsScreen(
             MaterialTheme.colorScheme.background,
         ), startY = 1570f, endY = 1700f
     )
-    val scrollState = rememberScrollState()
+    rememberScrollState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {  //.verticalScroll(scrollState)
@@ -51,11 +51,11 @@ fun SharedTransitionScope.MovieDetailsScreen(
                     .fillMaxWidth()
             ) {
                 SubcomposeAsyncImage(modifier = Modifier
-                    .fillMaxSize()
                     .sharedElement(
                         rememberSharedContentState(key = movie.id),
                         animatedVisibilityScope = animatedVisibilityScope
-                    ),
+                    )
+                    .fillMaxSize(),
                     contentScale = ContentScale.FillBounds,
                     model = ImageRequest.Builder(LocalContext.current)
                         .data("${TMDbService.IMAGE_BASE_URL}${movie.poster_path}")
